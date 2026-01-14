@@ -1,4 +1,6 @@
+import argparse
 import math
+import sys
 from datetime import datetime, timezone
 
 import torch
@@ -9,6 +11,10 @@ from torch.utils.data import DataLoader
 from torch.utils.data import random_split
 from torchvision import datasets, transforms
 from torchvision.models import VGG16_Weights
+
+import logging
+
+logger = logging.getLogger()
 
 
 def evaluate(model, loader, criterion, device, *, prefix='Val'):
@@ -39,6 +45,13 @@ def evaluate(model, loader, criterion, device, *, prefix='Val'):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        prog='CNN Trainer',
+        description='Updates and Trains CNNs for CIFAR10 and CIFAR100'
+    )
+    parser.add_argument('-c', '--checkpoint')
+    checkpoint_path = parser.parse_args().checkpoint
+
     data_dir = './data'
     batch_size = 64
     seed = 12
@@ -112,6 +125,20 @@ def main():
     # Training loop
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     vgg16 = vgg16.to(device)
+
+    # optionally load
+    if checkpoint_path:
+        try:
+            checkpoint = torch.load(checkpoint_path, weights_only=True, device=device)
+            vgg16.load_state_dict(checkpoint['model_state'])
+            optimizer.load_state_dict(checkpoint['optimizer_state'])
+        except FileNotFoundError as e:
+            logger.error(f"Checkpoint {checkpoint_path} was not found, exception={repr(e)} Exiting...")
+            sys.exit()
+        except Exception as e:
+            logger.error(
+                f"Encountered exception while loading checkpoint {checkpoint_path}, exception={repr(e)}. Exiting...")
+            sys.exit()
 
     for epoch in range(1):
         vgg16.train()
