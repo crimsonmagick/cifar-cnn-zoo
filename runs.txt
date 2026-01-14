@@ -47,3 +47,28 @@
     Train: Epoch 10, Loss: 0.5269, Accuracy: 81.28%
     Val: Loss: 0.4271, Accuracy: 85.12%
     Test: Loss: 0.4691, Accuracy: 84.08%
+
+    /home/welby/workspace/transfer/.venv/bin/python /home/welby/workspace/transfer/run.py
+    Train: Epoch 1, Loss: 0.7563, Accuracy: 74.10%
+    Val: Loss: 0.5234, Accuracy: 82.56%
+    Train: Epoch 2, Loss: 0.6054, Accuracy: 78.61%
+    Val: Loss: 0.4865, Accuracy: 83.28%
+    Train: Epoch 3, Loss: 0.5780, Accuracy: 79.59%
+    Val: Loss: 0.4691, Accuracy: 84.10%
+    Train: Epoch 4, Loss: 0.5656, Accuracy: 79.84%
+    Val: Loss: 0.4517, Accuracy: 84.30%
+    Train: Epoch 5, Loss: 0.5512, Accuracy: 80.42%
+    Val: Loss: 0.4516, Accuracy: 84.48%
+    Train: Epoch 6, Loss: 0.5442, Accuracy: 80.82%
+    Val: Loss: 0.4399, Accuracy: 85.10%
+    Train: Epoch 7, Loss: 0.5388, Accuracy: 81.04%
+    Val: Loss: 0.4344, Accuracy: 85.34%
+    Train: Epoch 8, Loss: 0.5368, Accuracy: 81.07%
+    Val: Loss: 0.4398, Accuracy: 84.66%
+    Train: Epoch 9, Loss: 0.5278, Accuracy: 81.20%
+    Val: Loss: 0.4363, Accuracy: 84.92%
+    Train: Epoch 10, Loss: 0.5252, Accuracy: 81.20%
+    Val: Loss: 0.4272, Accuracy: 85.24%
+    Test: Loss: 0.4703, Accuracy: 83.66%
+
+    Process finished with exit code 0
