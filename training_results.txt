@@ -1,0 +1,47 @@
+VGG11
+
+VGG19
+/home/welby/workspace/transfer/.venv/bin/python /home/welby/workspace/transfer/train.py 20 -c models/vgg19_cifar10_checkpoint_2026-01-19T06:39:10.682422+00:00.pth
+Train: Epoch 31, Loss: 0.0755, Accuracy: 97.30%
+Val: Loss: 0.1878, Accuracy: 94.70%
+Train: Epoch 32, Loss: 0.0751, Accuracy: 97.28%
+Val: Loss: 0.1821, Accuracy: 94.80%
+Train: Epoch 33, Loss: 0.0701, Accuracy: 97.51%
+Val: Loss: 0.1932, Accuracy: 94.72%
+Train: Epoch 34, Loss: 0.0723, Accuracy: 97.39%
+Val: Loss: 0.1787, Accuracy: 94.92%
+Train: Epoch 35, Loss: 0.0681, Accuracy: 97.55%
+Val: Loss: 0.1824, Accuracy: 94.80%
+Train: Epoch 36, Loss: 0.0652, Accuracy: 97.69%
+Val: Loss: 0.1929, Accuracy: 94.62%
+Train: Epoch 37, Loss: 0.0632, Accuracy: 97.81%
+Val: Loss: 0.1790, Accuracy: 94.90%
+Train: Epoch 38, Loss: 0.0599, Accuracy: 97.81%
+Val: Loss: 0.1943, Accuracy: 94.84%
+Train: Epoch 39, Loss: 0.0588, Accuracy: 97.86%
+Val: Loss: 0.1900, Accuracy: 94.68%
+Train: Epoch 40, Loss: 0.0557, Accuracy: 97.95%
+Val: Loss: 0.1788, Accuracy: 95.10%
+Train: Epoch 41, Loss: 0.0538, Accuracy: 98.08%
+Val: Loss: 0.1961, Accuracy: 94.66%
+Train: Epoch 42, Loss: 0.0531, Accuracy: 98.08%
+Val: Loss: 0.1898, Accuracy: 94.94%
+Train: Epoch 43, Loss: 0.0499, Accuracy: 98.20%
+Val: Loss: 0.1866, Accuracy: 94.94%
+Train: Epoch 44, Loss: 0.0471, Accuracy: 98.29%
+Val: Loss: 0.1875, Accuracy: 94.98%
+Train: Epoch 45, Loss: 0.0503, Accuracy: 98.22%
+Val: Loss: 0.1912, Accuracy: 95.06%
+Train: Epoch 46, Loss: 0.0465, Accuracy: 98.31%
+Val: Loss: 0.1912, Accuracy: 95.04%
+Train: Epoch 47, Loss: 0.0418, Accuracy: 98.53%
+Val: Loss: 0.2030, Accuracy: 94.88%
+Train: Epoch 48, Loss: 0.0422, Accuracy: 98.55%
+Val: Loss: 0.2009, Accuracy: 95.06%
+Train: Epoch 49, Loss: 0.0457, Accuracy: 98.38%
+Val: Loss: 0.2016, Accuracy: 94.96%
+Train: Epoch 50, Loss: 0.0418, Accuracy: 98.48%
+Val: Loss: 0.2103, Accuracy: 94.64%
+Test: Loss: 0.2244, Accuracy: 94.12%
+
+
