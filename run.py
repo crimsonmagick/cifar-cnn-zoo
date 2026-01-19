@@ -49,8 +49,11 @@ def main():
         prog='CNN Trainer',
         description='Updates and Trains CNNs for CIFAR10 and CIFAR100'
     )
+    parser.add_argument('iterations', type=int)
     parser.add_argument('-c', '--checkpoint')
-    checkpoint_path = parser.parse_args().checkpoint
+    args = parser.parse_args()
+    iterations = args.iterations
+    checkpoint_path = args.checkpoint
 
     data_dir = './data'
     batch_size = 64
@@ -106,32 +109,44 @@ def main():
     test_loader = DataLoader(test_dataset, shuffle=False, **loader_kwargs)
     val_loader = DataLoader(val_dataset, shuffle=False, **loader_kwargs)
 
-    # Freeze all the layers of the pretrained model
     for param in vgg16.parameters():
-        param.requires_grad = False
+        param.requires_grad = True
 
     # Replace the last fully - connected layer
     num_ftrs = vgg16.classifier[6].in_features
     vgg16.classifier[6] = nn.Linear(num_ftrs, 10)  # For CIFAR10 which has 10 classes
 
-    for param in vgg16.classifier:
-        param.requires_grad = True
+    # train classifier and final vgg layer
+    # for param in vgg16.classifier:
+    #     param.requires_grad = True
+    # for param in vgg16.features[24:].parameters():
+    #     param.requires_grad = True
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(vgg16.classifier.parameters(), lr=0.001,
-                          momentum=0.9, weight_decay=5e-4)
+    optimizer = optim.SGD(
+        [
+            # {"params": vgg16.features[24:].parameters(), "lr": 1e-4},
+            {"params": vgg16.features.parameters(), "lr": 1e-4},
+            {"params": vgg16.classifier[6].parameters(), "lr": 1e-3},
+        ],
+        momentum=0.9,
+        weight_decay=5e-4,
+    )
 
     # Training loop
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     vgg16 = vgg16.to(device)
 
+    initial_epoch = 0
+
     # optionally load
     if checkpoint_path:
         try:
-            checkpoint = torch.load(checkpoint_path, weights_only=True, device=device)
+            checkpoint = torch.load(checkpoint_path, weights_only=True, map_location=device)
             vgg16.load_state_dict(checkpoint['model_state'])
-            optimizer.load_state_dict(checkpoint['optimizer_state'])
+            # optimizer.load_state_dict(checkpoint['optimizer_state'])
+            initial_epoch = checkpoint['epoch'] + 1
         except FileNotFoundError as e:
             logger.error(f"Checkpoint {checkpoint_path} was not found, exception={repr(e)} Exiting...")
             sys.exit()
@@ -140,7 +155,7 @@ def main():
                 f"Encountered exception while loading checkpoint {checkpoint_path}, exception={repr(e)}. Exiting...")
             sys.exit()
 
-    for epoch in range(1):
+    for epoch in range(initial_epoch, initial_epoch + iterations):
         vgg16.train()
         running_loss = 0.0
         total = 0
