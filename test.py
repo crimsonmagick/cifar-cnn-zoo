@@ -13,6 +13,7 @@ from torchvision import datasets, transforms
 import logging
 
 from evaluation import evaluate
+from resnet import resnet18_cifar10
 from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10, vgg13_cifar10
 
 logger = logging.getLogger()
@@ -30,7 +31,7 @@ def main():
     data_dir = './data'
     batch_size = 64
 
-    model = vgg19_cifar10(transfer_learn=False)
+    model = resnet18_cifar10(transfer_learn=False)
 
     eval_transform = transforms.Compose([
         transforms.Resize((224, 224)),
