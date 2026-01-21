@@ -1,4 +1,112 @@
 VGG11
+Testing vgg11_cifar10
+Test: Loss: 0.2187, Accuracy: 92.63%
+Trained for 50 epochs
+
+vgg13_cifar10
+Train: Epoch 1, Loss: 0.6629, Accuracy: 76.85%
+Val: Loss: 0.3750, Accuracy: 87.10%
+Train: Epoch 2, Loss: 0.4531, Accuracy: 84.16%
+Val: Loss: 0.3280, Accuracy: 88.64%
+Train: Epoch 3, Loss: 0.4038, Accuracy: 85.96%
+Val: Loss: 0.3041, Accuracy: 89.74%
+Train: Epoch 4, Loss: 0.3690, Accuracy: 86.99%
+Val: Loss: 0.2980, Accuracy: 89.82%
+Train: Epoch 5, Loss: 0.3453, Accuracy: 88.00%
+Val: Loss: 0.2701, Accuracy: 90.82%
+Train: Epoch 6, Loss: 0.3257, Accuracy: 88.65%
+Val: Loss: 0.2609, Accuracy: 91.04%
+Train: Epoch 7, Loss: 0.3112, Accuracy: 89.26%
+Val: Loss: 0.2506, Accuracy: 91.50%
+Train: Epoch 8, Loss: 0.2976, Accuracy: 89.49%
+Val: Loss: 0.2443, Accuracy: 91.60%
+Train: Epoch 9, Loss: 0.2862, Accuracy: 90.03%
+Val: Loss: 0.2335, Accuracy: 92.24%
+Train: Epoch 10, Loss: 0.2747, Accuracy: 90.29%
+Val: Loss: 0.2347, Accuracy: 91.70%
+Train: Epoch 11, Loss: 0.2678, Accuracy: 90.49%
+Val: Loss: 0.2295, Accuracy: 91.98%
+Train: Epoch 12, Loss: 0.2578, Accuracy: 91.06%
+Val: Loss: 0.2220, Accuracy: 92.32%
+Train: Epoch 13, Loss: 0.2504, Accuracy: 91.21%
+Val: Loss: 0.2156, Accuracy: 92.64%
+Train: Epoch 14, Loss: 0.2415, Accuracy: 91.57%
+Val: Loss: 0.2187, Accuracy: 92.56%
+Train: Epoch 15, Loss: 0.2346, Accuracy: 91.80%
+Val: Loss: 0.2176, Accuracy: 92.66%
+Train: Epoch 16, Loss: 0.2288, Accuracy: 91.99%
+Val: Loss: 0.2101, Accuracy: 93.04%
+Train: Epoch 17, Loss: 0.2224, Accuracy: 92.14%
+Val: Loss: 0.2146, Accuracy: 92.98%
+Train: Epoch 18, Loss: 0.2173, Accuracy: 92.31%
+Val: Loss: 0.2065, Accuracy: 93.16%
+Train: Epoch 19, Loss: 0.2097, Accuracy: 92.63%
+Val: Loss: 0.2005, Accuracy: 93.38%
+Train: Epoch 20, Loss: 0.2068, Accuracy: 92.73%
+Val: Loss: 0.2063, Accuracy: 93.36%
+Train: Epoch 21, Loss: 0.2022, Accuracy: 93.01%
+Val: Loss: 0.1911, Accuracy: 93.92%
+Train: Epoch 22, Loss: 0.2003, Accuracy: 93.08%
+Val: Loss: 0.1989, Accuracy: 93.62%
+Train: Epoch 23, Loss: 0.1913, Accuracy: 93.36%
+Val: Loss: 0.1989, Accuracy: 93.54%
+Train: Epoch 24, Loss: 0.1884, Accuracy: 93.43%
+Val: Loss: 0.1964, Accuracy: 93.44%
+Train: Epoch 25, Loss: 0.1869, Accuracy: 93.36%
+Val: Loss: 0.2015, Accuracy: 93.36%
+Train: Epoch 26, Loss: 0.1795, Accuracy: 93.74%
+Val: Loss: 0.1947, Accuracy: 93.82%
+Train: Epoch 27, Loss: 0.1764, Accuracy: 93.85%
+Val: Loss: 0.2016, Accuracy: 93.48%
+Train: Epoch 28, Loss: 0.1704, Accuracy: 93.81%
+Val: Loss: 0.1929, Accuracy: 93.70%
+Train: Epoch 29, Loss: 0.1669, Accuracy: 94.18%
+Val: Loss: 0.1940, Accuracy: 93.84%
+Train: Epoch 30, Loss: 0.1613, Accuracy: 94.33%
+Val: Loss: 0.1953, Accuracy: 93.84%
+Train: Epoch 31, Loss: 0.1586, Accuracy: 94.37%
+Val: Loss: 0.2003, Accuracy: 93.60%
+Train: Epoch 32, Loss: 0.1581, Accuracy: 94.42%
+Val: Loss: 0.1815, Accuracy: 94.04%
+Train: Epoch 33, Loss: 0.1541, Accuracy: 94.52%
+Val: Loss: 0.1852, Accuracy: 94.04%
+Train: Epoch 34, Loss: 0.1497, Accuracy: 94.58%
+Val: Loss: 0.1910, Accuracy: 93.80%
+Train: Epoch 35, Loss: 0.1520, Accuracy: 94.70%
+Val: Loss: 0.1907, Accuracy: 93.92%
+Train: Epoch 36, Loss: 0.1439, Accuracy: 94.83%
+Val: Loss: 0.1900, Accuracy: 94.12%
+Train: Epoch 37, Loss: 0.1410, Accuracy: 94.97%
+Val: Loss: 0.1870, Accuracy: 93.84%
+Train: Epoch 38, Loss: 0.1398, Accuracy: 94.99%
+Val: Loss: 0.1907, Accuracy: 93.88%
+Train: Epoch 39, Loss: 0.1388, Accuracy: 95.07%
+Val: Loss: 0.1878, Accuracy: 94.06%
+Train: Epoch 40, Loss: 0.1324, Accuracy: 95.24%
+Val: Loss: 0.1879, Accuracy: 94.16%
+Train: Epoch 41, Loss: 0.1320, Accuracy: 95.22%
+Val: Loss: 0.1866, Accuracy: 93.96%
+Train: Epoch 42, Loss: 0.1318, Accuracy: 95.29%
+Val: Loss: 0.1825, Accuracy: 94.24%
+Train: Epoch 43, Loss: 0.1287, Accuracy: 95.45%
+Val: Loss: 0.1873, Accuracy: 94.36%
+Train: Epoch 44, Loss: 0.1264, Accuracy: 95.52%
+Val: Loss: 0.1867, Accuracy: 94.08%
+Train: Epoch 45, Loss: 0.1220, Accuracy: 95.70%
+Val: Loss: 0.1905, Accuracy: 94.32%
+Train: Epoch 46, Loss: 0.1207, Accuracy: 95.61%
+Val: Loss: 0.1911, Accuracy: 94.22%
+Train: Epoch 47, Loss: 0.1169, Accuracy: 95.80%
+Val: Loss: 0.1884, Accuracy: 94.26%
+Train: Epoch 48, Loss: 0.1144, Accuracy: 95.96%
+Val: Loss: 0.1916, Accuracy: 94.14%
+Train: Epoch 49, Loss: 0.1154, Accuracy: 95.85%
+Val: Loss: 0.1856, Accuracy: 94.30%
+Train: Epoch 50, Loss: 0.1113, Accuracy: 96.01%
+Val: Loss: 0.1821, Accuracy: 94.30%
+Test: Loss: 0.2175, Accuracy: 93.04%
+
+Process finished with exit code 0
 
 VGG19
 /home/welby/workspace/transfer/.venv/bin/python /home/welby/workspace/transfer/train.py 20 -c models/vgg19_cifar10_checkpoint_2026-01-19T06:39:10.682422+00:00.pth

@@ -12,36 +12,11 @@ from torchvision import datasets, transforms
 
 import logging
 
-from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10
+from evaluation import evaluate
+from resnet import resnet18_cifar10, resnet34_cifar10
+from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10, vgg13_cifar10
 
 logger = logging.getLogger()
-
-
-def evaluate(model, loader, criterion, device, *, prefix='Val'):
-    with torch.no_grad():
-        total = 0
-        correct = 0
-        running_loss = 0
-        was_training = model.training
-
-        model.eval()
-        for inputs, labels in loader:
-            inputs, labels = inputs.to(device), labels.to(device)
-            outputs = model(inputs)
-
-            loss = criterion(outputs, labels)
-            running_loss += loss.item()
-
-            predicted = outputs.argmax(dim=1)
-            total += labels.size(0)
-            correct += (predicted == labels).sum().item()
-            accuracy = 100.0 * correct / total
-        if was_training:
-            model.train()
-
-        avg_loss = running_loss / len(loader)
-        print(f'{prefix}: Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%')
-        return avg_loss, accuracy
 
 
 def main():
@@ -59,6 +34,7 @@ def main():
     batch_size = 64
     seed = 12
 
+    # model = resnet34_cifar10(transfer_learn=True)
     model = vgg11_cifar10(transfer_learn=True)
 
     eval_transform = transforms.Compose([
@@ -118,17 +94,28 @@ def main():
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
+    # base_params = [p for n, p in model.model.named_parameters() if not n.startswith("fc.")]
+    # head_params = model.model.fc.parameters()
+    #
+    # optimizer = optim.SGD(
+    #     [
+    #         {"params": base_params, "lr": 1e-4},
+    #         {"params": head_params, "lr": 1e-3},
+    #     ],
+    #     momentum=0.9,
+    #     weight_decay=5e-4,
+    # )
+    # vgg
     optimizer = optim.SGD(
         [
             # {"params": vgg16.features[24:].parameters(), "lr": 1e-4},
-            {"params": model.model.features.parameters(), "lr": 1e-4},
-            {"params": model.model.classifier[6].parameters(), "lr": 1e-3},
+            {"params": model.model.parameters(), "lr": 1e-4},
+            {"params": model.model.fc.parameters(), "lr": 1e-3},
         ],
         momentum=0.9,
         weight_decay=5e-4,
     )
 
-    # Training loop
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
@@ -149,6 +136,7 @@ def main():
                 f"Encountered exception while loading checkpoint {checkpoint_path}, exception={repr(e)}. Exiting...")
             sys.exit()
 
+    print(f"Beginning training loop for {model.model_name}")
     for epoch in range(initial_epoch, initial_epoch + iterations):
         model.train()
         running_loss = 0.0
