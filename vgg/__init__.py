@@ -1,33 +1,43 @@
+from torch import optim
 from torch.hub import load_state_dict_from_url
 from torchvision import models
 from torchvision.models import VGG16_Weights, VGG19_Weights, VGG11_Weights, VGG13_Weights, WeightsEnum
 
 from vgg.modeling_cifar10 import VGGForCIFAR10
 
+def _init_optimizer(model: VGGForCIFAR10):
+    return optim.SGD(
+        [
+            {"params": model.model.features.parameters(), "lr": 1e-4},
+            {"params": model.model.classifier.parameters(), "lr": 1e-3},
+        ],
+        momentum=0.9,
+        weight_decay=5e-4,
+    )
 
 def vgg11_cifar10(transfer_learn=False):
     weights = VGG11_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg11 = models.vgg11(weights=weights)
-    return VGGForCIFAR10(vgg11, "vgg11_cifar10")
+    vgg = models.vgg11(weights=weights)
+    model = VGGForCIFAR10(vgg, "vgg11_cifar10")
+    return model, _init_optimizer(model)
 
 
 def vgg13_cifar10(transfer_learn=False):
-    def get_state_dict(self, *args, **kwargs):
-        kwargs.pop("check_hash")
-        return load_state_dict_from_url(self.url, *args, **kwargs)
-    WeightsEnum.get_state_dict = get_state_dict
     weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg13 = models.vgg13(weights=weights)
-    return VGGForCIFAR10(vgg13, "vgg13_cifar10")
+    vgg = models.vgg13(weights=weights)
+    model = VGGForCIFAR10(vgg, "vgg13_cifar10")
+    return model, _init_optimizer(model)
 
 
 def vgg16_cifar10(transfer_learn=False):
-    weights = VGG16_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg16 = models.vgg16(weights=weights)
-    return VGGForCIFAR10(vgg16, "vgg16_cifar10")
+    weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
+    vgg = models.vgg13(weights=weights)
+    model = VGGForCIFAR10(vgg, "vgg16_cifar10")
+    return model, _init_optimizer(model)
 
 
 def vgg19_cifar10(transfer_learn=False):
-    weights = VGG19_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg19 = models.vgg19(weights=weights)
-    return VGGForCIFAR10(vgg19, "vgg19_cifar10")
+    weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
+    vgg = models.vgg13(weights=weights)
+    model = VGGForCIFAR10(vgg, "vgg19_cifar10")
+    return model, _init_optimizer(model)

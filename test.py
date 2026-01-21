@@ -1,5 +1,4 @@
 import argparse
-import math
 import sys
 from datetime import datetime, timezone
 
@@ -31,7 +30,7 @@ def main():
     data_dir = './data'
     batch_size = 64
 
-    model = resnet18_cifar10(transfer_learn=False)
+    model, _ = resnet18_cifar10(transfer_learn=False)
 
     eval_transform = transforms.Compose([
         transforms.Resize((224, 224)),

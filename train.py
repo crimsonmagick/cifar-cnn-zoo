@@ -34,7 +34,7 @@ def main():
     batch_size = 64
     seed = 12
 
-    model = resnet34_cifar10(transfer_learn=True)
+    model, optimizer = vgg13_cifar10(transfer_learn=True)
 
     eval_transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -91,30 +91,6 @@ def main():
     for param in model.parameters():
         param.requires_grad = True
 
-    # Define the loss function and optimizer
-    criterion = nn.CrossEntropyLoss()
-    base_params = [p for n, p in model.model.named_parameters() if not n.startswith("fc.")]
-    head_params = model.model.fc.parameters()
-
-    optimizer = optim.SGD(
-        [
-            {"params": base_params, "lr": 1e-4},
-            {"params": head_params, "lr": 1e-3},
-        ],
-        momentum=0.9,
-        weight_decay=5e-4,
-    )
-    # vgg
-    # optimizer = optim.SGD(
-    #     [
-    #         # {"params": vgg16.features[24:].parameters(), "lr": 1e-4},
-    #         {"params": model.model.parameters(), "lr": 1e-4},
-    #         {"params": model.model.fc.parameters(), "lr": 1e-3},
-    #     ],
-    #     momentum=0.9,
-    #     weight_decay=5e-4,
-    # )
-
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
 
@@ -136,6 +112,7 @@ def main():
             sys.exit()
 
     print(f"Beginning training loop for {model.model_name}")
+    criterion = nn.CrossEntropyLoss()
     for epoch in range(initial_epoch, initial_epoch + iterations):
         model.train()
         running_loss = 0.0
