@@ -1,12 +1,13 @@
 from torch import optim
 from torchvision import models
-from torchvision.models import ResNet18_Weights, ResNet34_Weights
+from torchvision.models import ResNet18_Weights, ResNet34_Weights, ResNet50_Weights
 
 from resnet.modeling_cifar10 import ResNetForCIFAR10
+from resnet.modeling_cifar100 import ResNetForCIFAR100
 
 
 def _init_optimizer(model):
-    base_params = [p for n, p in model.model.named_parameters() if not n.startswith("fc.")]
+    base_params = [p for n, p in model.model.named_parameters() if not n.startswith("fc")]
     head_params = model.model.fc.parameters()
     return optim.SGD(
         [
@@ -28,5 +29,12 @@ def resnet34_cifar10(transfer_learn=False):
     weights = ResNet34_Weights.IMAGENET1K_V1 if transfer_learn else None
     resnet = models.resnet34(weights=weights)
     model = ResNetForCIFAR10(resnet, "resnet34_cifar10")
+    optimizer = _init_optimizer(model)
+    return model, optimizer
+
+def resnet50_cifar100(transfer_learn=False):
+    weights = ResNet50_Weights.IMAGENET1K_V1 if transfer_learn else None
+    resnet = models.resnet50(weights=weights)
+    model = ResNetForCIFAR100(resnet, "renet50_cifar100")
     optimizer = _init_optimizer(model)
     return model, optimizer

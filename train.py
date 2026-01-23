@@ -13,7 +13,7 @@ from torchvision import datasets, transforms
 import logging
 
 from evaluation import evaluate
-from resnet import resnet18_cifar10, resnet34_cifar10
+from resnet import resnet18_cifar10, resnet34_cifar10, resnet50_cifar100
 from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10, vgg13_cifar10
 
 logger = logging.getLogger()
@@ -34,7 +34,7 @@ def main():
     batch_size = 64
     seed = 12
 
-    model, optimizer = vgg13_cifar10(transfer_learn=True)
+    model, optimizer = resnet50_cifar100(transfer_learn=True)
 
     eval_transform = transforms.Compose([
         transforms.Resize((224, 224)),
@@ -65,13 +65,13 @@ def main():
         'drop_last': False
     }
 
-    train_dataset = datasets.CIFAR10(root=data_dir, train=True,
+    train_dataset = datasets.CIFAR100(root=data_dir, train=True,
                                      download=True, transform=train_transform)
-    val_dataset = datasets.CIFAR10(root=data_dir, train=True,
+    val_dataset = datasets.CIFAR100(root=data_dir, train=True,
                                    download=True, transform=eval_transform)
-    train_eval_dataset = datasets.CIFAR10(root=data_dir, train=True,
+    train_eval_dataset = datasets.CIFAR100(root=data_dir, train=True,
                                           download=True, transform=eval_transform)
-    test_dataset = datasets.CIFAR10(root=data_dir, train=False,
+    test_dataset = datasets.CIFAR100(root=data_dir, train=False,
                                     download=True, transform=eval_transform)
 
     val_size = math.floor(0.10 * len(train_dataset))
@@ -138,7 +138,6 @@ def main():
         accuracy = 100.0 * correct / total
         print(f'Train: Epoch {epoch + 1}, Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%')
         evaluate(model, val_loader, criterion, device)
-        # evaluate(vgg16, train_eval_loader, criterion, device, prefix="Train(Eval)")
 
     evaluate(model, test_loader, criterion, device, prefix='Test')
     if epoch >= 0:

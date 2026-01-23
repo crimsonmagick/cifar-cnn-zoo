@@ -30,14 +30,14 @@ def vgg13_cifar10(transfer_learn=False):
 
 
 def vgg16_cifar10(transfer_learn=False):
-    weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg13(weights=weights)
+    weights = VGG16_Weights.IMAGENET1K_V1 if transfer_learn else None
+    vgg = models.vgg16(weights=weights)
     model = VGGForCIFAR10(vgg, "vgg16_cifar10")
     return model, _init_optimizer(model)
 
 
 def vgg19_cifar10(transfer_learn=False):
-    weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg13(weights=weights)
+    weights = VGG19_Weights.IMAGENET1K_V1 if transfer_learn else None
+    vgg = models.vgg19(weights=weights)
     model = VGGForCIFAR10(vgg, "vgg19_cifar10")
     return model, _init_optimizer(model)
