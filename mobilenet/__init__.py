@@ -2,10 +2,11 @@ import timm
 from timm.models import EfficientNet
 from torch import optim
 
-from vgg.modeling_cifar10 import VGGForCIFAR10
+from fine_tuned.datasets import CIFAR, get_loaders
+from mobilenet.modeling_cifar import MobileNetForCIFAR
 
-def _init_optimizer(model: EfficientNet):
 
+def _init_optimizer(model: MobileNetForCIFAR):
     base_params = [p for n, p in model.model.named_parameters() if not n.startswith("classifier")]
     head_params = model.model.classifier.parameters()
     return optim.SGD(
@@ -17,7 +18,14 @@ def _init_optimizer(model: EfficientNet):
         weight_decay=5e-4,
     )
 
-def mobilenet_v1_cifar10(transfer_learn=False):
-    model: EfficientNet = timm.create_model("mobilenetv1_100", pretrained=transfer_learn)
-    return model, _init_optimizer(model)
 
+def mobilenet_v1_cifar100(transfer_learn=False):
+    mobilenet: EfficientNet = timm.create_model("mobilenetv1_100", pretrained=transfer_learn)
+    model = MobileNetForCIFAR(mobilenet, "mobilenet_v1_cifar100", CIFAR.CIFAR100)
+    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR100)
+
+
+def mobilenet_v2_cifar100(transfer_learn=False):
+    mobilenet: EfficientNet = timm.create_model("mobilenetv2_100", pretrained=transfer_learn)
+    model = MobileNetForCIFAR(mobilenet, "mobilenet_v2_cifar100", CIFAR.CIFAR100)
+    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR100)

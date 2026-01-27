@@ -2,8 +2,8 @@ from torch import optim
 from torchvision import models
 from torchvision.models import ResNet18_Weights, ResNet34_Weights, ResNet50_Weights
 
-from resnet.modeling_cifar10 import ResNetForCIFAR10
-from resnet.modeling_cifar100 import ResNetForCIFAR100
+from fine_tuned.datasets import get_loaders, CIFAR
+from resnet.modeling_cifar import ResNetForCIFAR
 
 
 def _init_optimizer(model):
@@ -21,20 +21,18 @@ def _init_optimizer(model):
 def resnet18_cifar10(transfer_learn=False):
     weights = ResNet18_Weights.IMAGENET1K_V1 if transfer_learn else None
     resnet = models.resnet18(weights=weights)
-    model = ResNetForCIFAR10(resnet, "resnet18_cifar10")
-    optimizer = _init_optimizer(model)
-    return model, optimizer
+    model = ResNetForCIFAR(resnet, "resnet18_cifar10", CIFAR.CIFAR10)
+    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
 
 def resnet34_cifar10(transfer_learn=False):
     weights = ResNet34_Weights.IMAGENET1K_V1 if transfer_learn else None
     resnet = models.resnet34(weights=weights)
-    model = ResNetForCIFAR10(resnet, "resnet34_cifar10")
+    model = ResNetForCIFAR(resnet, "resnet34_cifar10", CIFAR.CIFAR10)
     optimizer = _init_optimizer(model)
-    return model, optimizer
+    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
 
 def resnet50_cifar100(transfer_learn=False):
     weights = ResNet50_Weights.IMAGENET1K_V1 if transfer_learn else None
     resnet = models.resnet50(weights=weights)
-    model = ResNetForCIFAR100(resnet, "renet50_cifar100")
-    optimizer = _init_optimizer(model)
-    return model, optimizer
+    model = ResNetForCIFAR(resnet, "renet50_cifar100", CIFAR.CIFAR100)
+    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR100)

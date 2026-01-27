@@ -12,6 +12,7 @@ from torchvision import datasets, transforms
 
 import logging
 
+import mobilenet
 from evaluation import evaluate
 from resnet import resnet18_cifar10, resnet34_cifar10, resnet50_cifar100
 from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10, vgg13_cifar10
@@ -30,66 +31,7 @@ def main():
     iterations = args.iterations
     checkpoint_path = args.checkpoint
 
-    data_dir = './data'
-    batch_size = 64
-    seed = 12
-
-    model, optimizer = resnet50_cifar100(transfer_learn=True)
-
-    eval_transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
-
-    train_transform = transforms.Compose([
-        transforms.RandomResizedCrop(
-            224,
-            scale=(0.8, 1.0),  # zoom range
-            ratio=(0.9, 1.1)  # aspect ratio jitter
-        ),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize(
-            mean=[0.485, 0.456, 0.406],
-            std=[0.229, 0.224, 0.225]
-        )
-    ])
-
-    loader_kwargs = {
-        'batch_size': batch_size,
-        'num_workers': 16,
-        'pin_memory': torch.cuda.is_available(),
-        'persistent_workers': True,
-        'prefetch_factor': 4,
-        'drop_last': False
-    }
-
-    train_dataset = datasets.CIFAR100(root=data_dir, train=True,
-                                     download=True, transform=train_transform)
-    val_dataset = datasets.CIFAR100(root=data_dir, train=True,
-                                   download=True, transform=eval_transform)
-    train_eval_dataset = datasets.CIFAR100(root=data_dir, train=True,
-                                          download=True, transform=eval_transform)
-    test_dataset = datasets.CIFAR100(root=data_dir, train=False,
-                                    download=True, transform=eval_transform)
-
-    val_size = math.floor(0.10 * len(train_dataset))
-    train_size = len(train_dataset) - val_size
-    train_dataset, _ = random_split(train_dataset, [train_size, val_size],
-                                    generator=torch.Generator().manual_seed(seed))
-    _, val_dataset = random_split(val_dataset, [train_size, val_size],
-                                  generator=torch.Generator().manual_seed(seed))
-    train_dataset.dataset.transform = train_transform
-    val_dataset.dataset.transform = eval_transform
-
-    train_loader = DataLoader(train_dataset, shuffle=True, **loader_kwargs)
-    train_eval_loader = DataLoader(train_eval_dataset, batch_size=batch_size, shuffle=False)
-    test_loader = DataLoader(test_dataset, shuffle=False, **loader_kwargs)
-    val_loader = DataLoader(val_dataset, shuffle=False, **loader_kwargs)
-
-    for param in model.parameters():
-        param.requires_grad = True
+    model, optimizer, (train_loader, val_loader, test_loader) = mobilenet.mobilenet_v1_cifar100(transfer_learn=True)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
@@ -99,9 +41,9 @@ def main():
     # optionally load
     if checkpoint_path:
         try:
-            checkpoint = torch.load(checkpoint_path, weights_only=True, map_location=device)
+            checkpoint = torch.load(checkpoint_path, weights_only=False, map_location=device)
             model.load_state_dict(checkpoint['model_state'])
-            # optimizer.load_state_dict(checkpoint['optimizer_state'])
+            optimizer.load_state_dict(checkpoint['optimizer_state'])
             initial_epoch = checkpoint['epoch'] + 1
         except FileNotFoundError as e:
             logger.error(f"Checkpoint {checkpoint_path} was not found, exception={repr(e)} Exiting...")
