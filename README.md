@@ -12,3 +12,5 @@ CIFAR CNN Zoo for use with the [hetero-accel](https://github.com/crimsonmagick/h
 | B        | vgg19       | cifar10  |
 | B        | mobilenetv1 | cifar100 |
 | B        | resnet50    | cifar100 |
+
+Developed using Python 3.11.13
