@@ -4,7 +4,6 @@ from enum import Enum
 import torch
 from torch.utils.data import random_split, DataLoader
 from torchvision import datasets, transforms
-from torchvision.datasets import VisionDataset
 
 _data_dir = './data'
 

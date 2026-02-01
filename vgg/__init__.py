@@ -1,11 +1,22 @@
+import logging
+
 from torch import optim
 from torchvision import models
-from torchvision.models import VGG16_Weights, VGG19_Weights, VGG11_Weights, VGG13_Weights, WeightsEnum
+from torchvision.models import VGG11_Weights, VGG13_Weights, VGG16_Weights, VGG19_Weights
 
 from fine_tuned.datasets import get_loaders, CIFAR
+from fine_tuned.fine_tuned_models import TorchVisionModelProvider
 from vgg.modeling_cifar import VGGForCIFAR
 
-def _init_optimizer(model: VGGForCIFAR):
+logger = logging.getLogger()
+
+class TunableVGGProvider(TorchVisionModelProvider):
+    VGG11 = models.vgg11, VGGForCIFAR, VGG11_Weights.IMAGENET1K_V1
+    VGG13 = models.vgg13, VGGForCIFAR, VGG13_Weights.IMAGENET1K_V1
+    VGG16 = models.vgg16, VGGForCIFAR, VGG16_Weights.IMAGENET1K_V1
+    VGG19 = models.vgg19, VGGForCIFAR, VGG19_Weights.IMAGENET1K_V1
+
+def _init_optimizer(model):
     return optim.SGD(
         [
             {"params": model.model.features.parameters(), "lr": 1e-4},
@@ -15,29 +26,11 @@ def _init_optimizer(model: VGGForCIFAR):
         weight_decay=5e-4,
     )
 
-def vgg11_cifar10(transfer_learn=False):
-    weights = VGG11_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg11(weights=weights)
-    model = VGGForCIFAR(vgg, "vgg11_cifar10", CIFAR.CIFAR10)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
 
-
-def vgg13_cifar10(transfer_learn=False):
-    weights = VGG13_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg13(weights=weights)
-    model = VGGForCIFAR(vgg, "vgg13_cifar10", CIFAR.CIFAR10)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
-
-
-def vgg16_cifar10(transfer_learn=False):
-    weights = VGG16_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg16(weights=weights)
-    model = VGGForCIFAR(vgg, "vgg16_cifar10", CIFAR.CIFAR10)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
-
-
-def vgg19_cifar10(transfer_learn=False):
-    weights = VGG19_Weights.IMAGENET1K_V1 if transfer_learn else None
-    vgg = models.vgg19(weights=weights)
-    model = VGGForCIFAR(vgg, "vgg19_cifar10", CIFAR.CIFAR10)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR10)
+def vgg_for_training(vgg_model_name: str, cifar: CIFAR, load_weights=False):
+    try:
+        vgg = TunableVGGProvider[vgg_model_name.upper()].model(load_weights, cifar)
+        return vgg, _init_optimizer(vgg), get_loaders(cifar)
+    except KeyError as e:
+        logger.error(f"Unable to find model {vgg_model_name}")
+        raise e

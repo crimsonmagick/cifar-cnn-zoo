@@ -12,10 +12,3 @@ class MobileNetForCIFAR(FineTunedCNN):
         super().__init__(mobilenet, model_name)
         in_feature_count = self.model.classifier.in_features
         self.model.classifier = nn.Linear(in_feature_count, cifar.value)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.model(x)
-
-    @property
-    def model_name(self):
-        return self._model_name

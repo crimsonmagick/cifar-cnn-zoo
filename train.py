@@ -1,23 +1,32 @@
 import argparse
-import math
+import os
 import sys
 from datetime import datetime, timezone
 
 import torch
 import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from torch.utils.data import random_split
-from torchvision import datasets, transforms
-
 import logging
 
-import mobilenet
+from constants import CHECKPOINT_DIR
 from evaluation import evaluate
-from resnet import resnet18_cifar10, resnet34_cifar10, resnet50_cifar100
-from vgg import vgg16_cifar10, vgg19_cifar10, vgg11_cifar10, vgg13_cifar10
+from model_services import model_for_training
 
 logger = logging.getLogger()
+
+
+def save_model(accuracy, acc_type, model, optimizer, epoch):
+    checkpoint_path = f'{CHECKPOINT_DIR}/{model.model_name}'
+    os.makedirs(checkpoint_path, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).isoformat()
+    accuracy_str = "{:.2f}".format(accuracy).replace(".", "_")
+    base_model_name, dataset_name = model.model_name.split("_")
+    torch.save({
+        "base_model_name": base_model_name,
+        "dataset_name": dataset_name,
+        "model_state": model.state_dict(),
+        "optimizer_state": optimizer.state_dict(),
+        "epoch": epoch
+    }, f"{checkpoint_path}/{acc_type}_{accuracy_str}_{timestamp}.pt")
 
 
 def main():
@@ -25,13 +34,20 @@ def main():
         prog='CNN Trainer',
         description='Updates and Trains CNNs for CIFAR10 and CIFAR100'
     )
+    parser.add_argument('model_name')
+    parser.add_argument('dataset_name')
     parser.add_argument('iterations', type=int)
     parser.add_argument('-c', '--checkpoint')
     args = parser.parse_args()
+    model_name = args.model_name
+    dataset_name = args.dataset_name
     iterations = args.iterations
     checkpoint_path = args.checkpoint
+    train(model_name, dataset_name, iterations, checkpoint_path)
 
-    model, optimizer, (train_loader, val_loader, test_loader) = mobilenet.mobilenet_v1_cifar100(transfer_learn=True)
+
+def train(model_name, dataset_name, iterations, checkpoint_path):
+    model, optimizer, (train_loader, val_loader, test_loader) = model_for_training(model_name, dataset_name, True)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
@@ -55,6 +71,7 @@ def main():
 
     print(f"Beginning training loop for {model.model_name}")
     criterion = nn.CrossEntropyLoss()
+    epoch = 0
     for epoch in range(initial_epoch, initial_epoch + iterations):
         model.train()
         running_loss = 0.0
@@ -81,14 +98,10 @@ def main():
         print(f'Train: Epoch {epoch + 1}, Loss: {avg_loss:.4f}, Accuracy: {accuracy:.2f}%')
         evaluate(model, val_loader, criterion, device)
 
-    evaluate(model, test_loader, criterion, device, prefix='Test')
+
+    _, test_accuracy = evaluate(model, test_loader, criterion, device, prefix='Test')
     if epoch >= 0:
-        timestamp = datetime.now(timezone.utc).isoformat()
-        torch.save({
-            "model_state": model.state_dict(),
-            "optimizer_state": optimizer.state_dict(),
-            "epoch": epoch
-        }, f"models/{model.model_name}_checkpoint_{timestamp}.pth")
+        save_model(test_accuracy, "test", model, optimizer, epoch)
 
 
 if __name__ == '__main__':

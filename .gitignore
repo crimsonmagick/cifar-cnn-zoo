@@ -1,1 +1,4 @@
 .idea
+model_checkpoints
+model_checkpoints_old
+cifar-cnn-zoo

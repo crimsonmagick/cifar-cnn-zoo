@@ -1,12 +1,20 @@
-import timm
-from timm.models import EfficientNet
+import logging
+
 from torch import optim
 
 from fine_tuned.datasets import CIFAR, get_loaders
+from fine_tuned.fine_tuned_models import TIMMModelProvider
 from mobilenet.modeling_cifar import MobileNetForCIFAR
 
+logger = logging.getLogger()
 
-def _init_optimizer(model: MobileNetForCIFAR):
+
+class TunableMobilenetProvider(TIMMModelProvider):
+    MOBILENETV1 = "mobilenetv1_100", MobileNetForCIFAR
+    MOBILENETV2 = "mobilenetv2_100", MobileNetForCIFAR
+
+
+def _init_optimizer(model):
     base_params = [p for n, p in model.model.named_parameters() if not n.startswith("classifier")]
     head_params = model.model.classifier.parameters()
     return optim.SGD(
@@ -19,13 +27,10 @@ def _init_optimizer(model: MobileNetForCIFAR):
     )
 
 
-def mobilenet_v1_cifar100(transfer_learn=False):
-    mobilenet: EfficientNet = timm.create_model("mobilenetv1_100", pretrained=transfer_learn)
-    model = MobileNetForCIFAR(mobilenet, "mobilenet_v1_cifar100", CIFAR.CIFAR100)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR100)
-
-
-def mobilenet_v2_cifar100(transfer_learn=False):
-    mobilenet: EfficientNet = timm.create_model("mobilenetv2_100", pretrained=transfer_learn)
-    model = MobileNetForCIFAR(mobilenet, "mobilenet_v2_cifar100", CIFAR.CIFAR100)
-    return model, _init_optimizer(model), get_loaders(CIFAR.CIFAR100)
+def mobilenet_for_training(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
+    try:
+        mobilenet = TunableMobilenetProvider[mobilenet_model_name.upper()].model(load_weights, cifar)
+        return mobilenet, _init_optimizer(mobilenet), get_loaders(cifar)
+    except KeyError as e:
+        logger.error(f"Unable to find model {mobilenet_model_name}")
+        raise e
