@@ -10,11 +10,13 @@ from vgg.modeling_cifar import VGGForCIFAR
 
 logger = logging.getLogger()
 
+
 class TunableVGGProvider(TorchVisionModelProvider):
     VGG11 = models.vgg11, VGGForCIFAR, VGG11_Weights.IMAGENET1K_V1
     VGG13 = models.vgg13, VGGForCIFAR, VGG13_Weights.IMAGENET1K_V1
     VGG16 = models.vgg16, VGGForCIFAR, VGG16_Weights.IMAGENET1K_V1
     VGG19 = models.vgg19, VGGForCIFAR, VGG19_Weights.IMAGENET1K_V1
+
 
 def _init_optimizer(model):
     return optim.SGD(
@@ -27,10 +29,14 @@ def _init_optimizer(model):
     )
 
 
-def vgg_for_training(vgg_model_name: str, cifar: CIFAR, load_weights=False):
+def vgg_cifar(vgg_model_name: str, cifar: CIFAR, load_weights=False):
     try:
-        vgg = TunableVGGProvider[vgg_model_name.upper()].model(load_weights, cifar)
-        return vgg, _init_optimizer(vgg), get_loaders(cifar)
+        return TunableVGGProvider[vgg_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
         logger.error(f"Unable to find model {vgg_model_name}")
         raise e
+
+
+def vgg_for_training(vgg_model_name: str, cifar: CIFAR, load_weights=False):
+    vgg = vgg_cifar(vgg_model_name, cifar, load_weights)
+    return vgg, _init_optimizer(vgg), get_loaders(cifar)

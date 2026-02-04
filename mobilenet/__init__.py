@@ -27,10 +27,14 @@ def _init_optimizer(model):
     )
 
 
-def mobilenet_for_training(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
+def mobilenet_cifar(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
     try:
-        mobilenet = TunableMobilenetProvider[mobilenet_model_name.upper()].model(load_weights, cifar)
-        return mobilenet, _init_optimizer(mobilenet), get_loaders(cifar)
+        return TunableMobilenetProvider[mobilenet_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
         logger.error(f"Unable to find model {mobilenet_model_name}")
         raise e
+
+
+def mobilenet_for_training(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
+    mobilenet = mobilenet_cifar(mobilenet_model_name, cifar, load_weights)
+    return mobilenet, _init_optimizer(mobilenet), get_loaders(cifar)

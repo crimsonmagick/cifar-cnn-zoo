@@ -23,7 +23,7 @@ def main():
         ("resnet34", "cifar10"),
         ("vgg19", "cifar10"),
         ("mobilenetv1", "cifar100"),
-        ("resnet50", "cifar100")
+        # ("resnet50", "cifar100") # REPEAT
     ]
 
     for model_name, dataset_name in model_dataset_pairs:

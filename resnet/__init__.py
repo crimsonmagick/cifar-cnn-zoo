@@ -30,10 +30,14 @@ def _init_optimizer(model):
     )
 
 
-def resnet_for_training(resnet_model_name: str, cifar: CIFAR, load_weights=False):
+def resnet_cifar(resnet_model_name: str, cifar: CIFAR, load_weights=False):
     try:
-        res_net = TunableResnetProvider[resnet_model_name.upper()].model(load_weights, cifar)
-        return res_net, _init_optimizer(res_net), get_loaders(cifar)
+        return TunableResnetProvider[resnet_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
         logger.error(f"Unable to find model {resnet_model_name}")
         raise e
+
+
+def resnet_for_training(resnet_model_name: str, cifar: CIFAR, load_weights=False):
+    res_net = resnet_cifar(resnet_model_name, cifar, load_weights)
+    return res_net, _init_optimizer(res_net), get_loaders(cifar)
