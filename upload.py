@@ -1,9 +1,11 @@
 import os
 
 import torch
+from huggingface_hub import upload_folder
 
-from constants import CHECKPOINT_DIR
-from model_services import model_for_training, model_from_checkpoint
+from constants import CHECKPOINT_DIR, DIST_DIR
+from model_services import model_from_checkpoint
+from safetensors.torch import save_file
 
 
 def main():
@@ -14,8 +16,16 @@ def main():
         checkpoints = sorted(os.listdir(rel_path), reverse=True)
         if checkpoints:
             checkpoint_path = f"{rel_path}/{checkpoints[0]}"
-            model, _ = model_from_checkpoint(checkpoint_path, device)
-
+            model = model_from_checkpoint(checkpoint_path, device)
+            print(f'{model.model_name} - {checkpoints[0]}')
+            dist_model_path = f"{DIST_DIR}/{model.model_name}"
+            os.makedirs(dist_model_path, exist_ok=True)
+            save_file(model.state_dict(), f"{dist_model_path}/model.safetensors")
+    upload_folder(
+        repo_id="supermangoman/cifar-cnn-zoo",
+        folder_path=DIST_DIR,
+        commit_message="CIFAR model update"
+    )
 
 
 
