@@ -1,12 +1,15 @@
 import torch
 from torch import nn
 
+from fine_tuned.datasets import CIFAR
 
-class FineTunedCNN(nn.Module):
 
-    def __init__(self, original_model: nn.Module, model_name: str):
+class CifarCNN(nn.Module):
+
+    def __init__(self, original_model: nn.Module, cifar: CIFAR, model_name: str):
         super().__init__()
         self.model = original_model
+        self.dataset = cifar
         self._model_name = model_name
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:

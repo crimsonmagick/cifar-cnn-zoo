@@ -2,7 +2,7 @@ import logging
 
 import torch
 
-from fine_tuned.datasets import CIFAR, get_loaders, get_test_loader
+from fine_tuned.datasets import CIFAR, get_test_loader
 from mobilenet import mobilenet_for_training, mobilenet_cifar
 from resnet import resnet_for_training, resnet_cifar
 from vgg import vgg_for_training, vgg_cifar
