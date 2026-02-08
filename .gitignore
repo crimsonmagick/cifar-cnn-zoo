@@ -2,3 +2,6 @@
 model_checkpoints
 model_checkpoints_old
 cifar-cnn-zoo
+**/__pycache__/**
+data
+model_safetensors
