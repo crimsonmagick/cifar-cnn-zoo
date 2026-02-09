@@ -2,19 +2,18 @@ import torch
 from torch import nn
 
 from fine_tuned.datasets import CIFAR
+from fine_tuned.fine_tuned_models import ArchType
 
 
 class CifarCNN(nn.Module):
 
-    def __init__(self, original_model: nn.Module, cifar: CIFAR, model_name: str):
+    def __init__(self, original_model: nn.Module, cifar: CIFAR, model_name: str, arch_type: ArchType, arch_name: str):
         super().__init__()
         self.model = original_model
         self.dataset = cifar
-        self._model_name = model_name
+        self.model_name = model_name
+        self.arch_type = arch_type
+        self.arch_name = arch_name
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.model(x)
-
-    @property
-    def model_name(self):
-        return self._model_name

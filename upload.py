@@ -11,7 +11,9 @@ from safetensors.torch import save_file
 
 def generate_config(dist_model_path, model):
     config = {
-        "model_name": model.model_name,
+        "arch_type": model.arch_type.value.lower(),
+        "arch_name": model.arch_name.lower(),
+        "model_name": model.model_name.lower(),
         "dataset": model.dataset.name.lower()
     }
     config_path = f"{dist_model_path}/config.json"

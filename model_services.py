@@ -1,4 +1,5 @@
 import logging
+import re
 
 import torch
 
@@ -50,6 +51,13 @@ def model_for_training(model_name, dataset_name, load_weights=False):
         msg = f'Unrecognized model "{model_name}"'
         logger.error(msg)
         raise RuntimeError(msg)
+
+def _is_safetensor(path):
+    expr = re.compile('.+\.safetensors$')
+    return True if expr.match(path) else False
+
+def model_from_safetensor(path):
+    pass
 
 
 def _model_from_checkpoint(checkpoint_path, device):
