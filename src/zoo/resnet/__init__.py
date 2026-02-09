@@ -4,9 +4,9 @@ from torch import optim
 from torchvision import models
 from torchvision.models import ResNet18_Weights, ResNet34_Weights, ResNet50_Weights
 
-from fine_tuned.datasets import get_loaders, CIFAR
-from fine_tuned.fine_tuned_models import TorchVisionModelProvider
-from resnet.modeling_cifar import ResNetForCIFAR
+from src.zoo.fine_tuned.datasets import get_loaders, Cifar
+from src.zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
+from src.zoo.resnet.modeling_cifar import ResNetForCIFAR
 
 logger = logging.getLogger()
 
@@ -30,7 +30,7 @@ def _init_optimizer(model):
     )
 
 
-def resnet_cifar(resnet_model_name: str, cifar: CIFAR, load_weights=False):
+def resnet_cifar(resnet_model_name: str, cifar: Cifar, load_weights=False):
     try:
         return TunableResnetProvider[resnet_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
@@ -38,6 +38,6 @@ def resnet_cifar(resnet_model_name: str, cifar: CIFAR, load_weights=False):
         raise e
 
 
-def resnet_for_training(resnet_model_name: str, cifar: CIFAR, load_weights=False):
+def resnet_for_training(resnet_model_name: str, cifar: Cifar, load_weights=False):
     res_net = resnet_cifar(resnet_model_name, cifar, load_weights)
     return res_net, _init_optimizer(res_net), get_loaders(cifar)

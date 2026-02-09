@@ -1,0 +1,1 @@
+HUGGINGFACE_ZOO = "supermangoman/cifar-cnn-zoo"

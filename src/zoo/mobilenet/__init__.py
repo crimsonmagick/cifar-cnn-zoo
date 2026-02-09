@@ -2,9 +2,9 @@ import logging
 
 from torch import optim
 
-from fine_tuned.datasets import CIFAR, get_loaders
-from fine_tuned.fine_tuned_models import TIMMModelProvider
-from mobilenet.modeling_cifar import MobileNetForCIFAR
+from src.zoo.fine_tuned.datasets import Cifar, get_loaders
+from src.zoo.fine_tuned.fine_tuned_models import TIMMModelProvider
+from src.zoo.mobilenet.modeling_cifar import MobileNetForCIFAR
 
 logger = logging.getLogger()
 
@@ -27,7 +27,7 @@ def _init_optimizer(model):
     )
 
 
-def mobilenet_cifar(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
+def mobilenet_cifar(mobilenet_model_name: str, cifar: Cifar, load_weights=False):
     try:
         return TunableMobilenetProvider[mobilenet_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
@@ -35,6 +35,6 @@ def mobilenet_cifar(mobilenet_model_name: str, cifar: CIFAR, load_weights=False)
         raise e
 
 
-def mobilenet_for_training(mobilenet_model_name: str, cifar: CIFAR, load_weights=False):
+def mobilenet_for_training(mobilenet_model_name: str, cifar: Cifar, load_weights=False):
     mobilenet = mobilenet_cifar(mobilenet_model_name, cifar, load_weights)
     return mobilenet, _init_optimizer(mobilenet), get_loaders(cifar)

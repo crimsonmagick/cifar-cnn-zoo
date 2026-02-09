@@ -1,13 +1,13 @@
 import torch
 from torch import nn
 
-from fine_tuned.datasets import CIFAR
-from fine_tuned.fine_tuned_models import ArchType
+from src.zoo.fine_tuned.datasets import Cifar
+from src.zoo.fine_tuned.fine_tuned_models import ArchType
 
 
 class CifarCNN(nn.Module):
 
-    def __init__(self, original_model: nn.Module, cifar: CIFAR, model_name: str, arch_type: ArchType, arch_name: str):
+    def __init__(self, original_model: nn.Module, cifar: Cifar, model_name: str, arch_type: ArchType, arch_name: str):
         super().__init__()
         self.model = original_model
         self.dataset = cifar

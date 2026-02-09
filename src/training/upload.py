@@ -5,7 +5,7 @@ import torch
 from huggingface_hub import upload_folder
 
 from constants import CHECKPOINT_DIR, DIST_DIR
-from model_services import model_from_checkpoint
+from src.zoo.model_services import model_from_checkpoint
 from safetensors.torch import save_file
 
 

@@ -4,9 +4,9 @@ from torch import optim
 from torchvision import models
 from torchvision.models import VGG11_Weights, VGG13_Weights, VGG16_Weights, VGG19_Weights
 
-from fine_tuned.datasets import get_loaders, CIFAR
-from fine_tuned.fine_tuned_models import TorchVisionModelProvider
-from vgg.modeling_cifar import VGGForCIFAR
+from src.zoo.fine_tuned.datasets import get_loaders, Cifar
+from src.zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
+from src.zoo.vgg.modeling_cifar import VGGForCIFAR
 
 logger = logging.getLogger()
 
@@ -29,7 +29,7 @@ def _init_optimizer(model):
     )
 
 
-def vgg_cifar(vgg_model_name: str, cifar: CIFAR, load_weights=False):
+def vgg_cifar(vgg_model_name: str, cifar: Cifar, load_weights=False):
     try:
         return TunableVGGProvider[vgg_model_name.upper()].model(load_weights, cifar)
     except KeyError as e:
@@ -37,6 +37,6 @@ def vgg_cifar(vgg_model_name: str, cifar: CIFAR, load_weights=False):
         raise e
 
 
-def vgg_for_training(vgg_model_name: str, cifar: CIFAR, load_weights=False):
+def vgg_for_training(vgg_model_name: str, cifar: Cifar, load_weights=False):
     vgg = vgg_cifar(vgg_model_name, cifar, load_weights)
     return vgg, _init_optimizer(vgg), get_loaders(cifar)

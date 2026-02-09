@@ -10,17 +10,17 @@ _batch_size = 64
 _seed = 12
 
 
-class CIFAR(Enum):
+class Cifar(Enum):
     CIFAR10 = 10
     CIFAR100 = 100
 
     def dataset(self):
-        if self is CIFAR.CIFAR10:
+        if self is Cifar.CIFAR10:
             return datasets.CIFAR10
         return datasets.CIFAR100
 
 
-def _eval_transform():
+def eval_transforms():
     return transforms.Compose([
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
@@ -39,16 +39,15 @@ def _loader_kwargs():
     }
 
 
-def get_test_loader(cifar: CIFAR):
-    eval_transform = _eval_transform()
+def get_test_loader(cifar: Cifar, loader_kwargs=None):
     test_dataset = cifar.dataset()(root=_data_dir, train=False,
-                                   download=True, transform=eval_transform)
-
-    loader_kwargs = _loader_kwargs()
+                                   download=True, transform=eval_transforms())
+    if loader_kwargs is None:
+        loader_kwargs = _loader_kwargs()
     return DataLoader(test_dataset, shuffle=False, **loader_kwargs)
 
 
-def get_loaders(cifar: CIFAR):
+def get_loaders(cifar: Cifar, loader_kwargs=None):
     train_transform = transforms.Compose([
         transforms.RandomResizedCrop(
             224,
@@ -63,14 +62,12 @@ def get_loaders(cifar: CIFAR):
         )
     ])
 
-    eval_transform = _eval_transform()
-
     train_dataset = cifar.dataset()(root=_data_dir, train=True,
                                     download=True, transform=train_transform)
     val_dataset = cifar.dataset()(root=_data_dir, train=True,
-                                  download=True, transform=eval_transform)
+                                  download=True, transform=eval_transforms())
     test_dataset = cifar.dataset()(root=_data_dir, train=False,
-                                   download=True, transform=eval_transform)
+                                   download=True, transform=eval_transforms())
 
     val_size = math.floor(0.10 * len(train_dataset))
     train_size = len(train_dataset) - val_size
@@ -79,9 +76,10 @@ def get_loaders(cifar: CIFAR):
     _, val_dataset = random_split(val_dataset, [train_size, val_size],
                                   generator=torch.Generator().manual_seed(_seed))
     train_dataset.dataset.transform = train_transform
-    val_dataset.dataset.transform = eval_transform
+    val_dataset.dataset.transform = eval_transforms()
 
-    loader_kwargs = _loader_kwargs()
+    if loader_kwargs is None:
+        loader_kwargs = _loader_kwargs()
     train_loader = DataLoader(train_dataset, shuffle=True, **loader_kwargs)
     test_loader = DataLoader(test_dataset, shuffle=False, **loader_kwargs)
     val_loader = DataLoader(val_dataset, shuffle=False, **loader_kwargs)

@@ -1,5 +1,4 @@
 import argparse
-import sys
 
 import torch
 import torch.nn as nn
@@ -7,21 +6,21 @@ import torch.nn as nn
 import logging
 
 from evaluation import evaluate
-from model_services import model_for_testing
+from src.zoo.model_services import model_for_testing_safetensor
 
 logger = logging.getLogger()
 
 
 def main():
     parser = argparse.ArgumentParser(
-        prog='CNN Tester',
-        description='Evaluates a CNN Using a Test Dataset'
+        prog='CNN Safetensor Tester',
+        description='Evaluates a CNN Using a Test Dataset, Loaded From Safetensors'
     )
-    parser.add_argument('checkpoint')
+    parser.add_argument('model_path')
     args = parser.parse_args()
-    checkpoint_path = args.checkpoint
+    model_name = args.model_path
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    model, test_loader = model_for_testing(checkpoint_path, device)
+    model, test_loader = model_for_testing_safetensor(model_name, device)
 
     print(f"Testing {model.model_name}")
 

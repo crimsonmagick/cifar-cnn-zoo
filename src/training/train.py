@@ -9,7 +9,7 @@ import logging
 
 from constants import CHECKPOINT_DIR
 from evaluation import evaluate
-from model_services import model_for_training
+from src.zoo.model_services import model_for_training
 
 logger = logging.getLogger()
 
