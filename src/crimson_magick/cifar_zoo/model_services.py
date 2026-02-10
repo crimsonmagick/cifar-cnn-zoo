@@ -5,12 +5,12 @@ import torch
 from huggingface_hub import snapshot_download
 from safetensors.torch import load_file
 
-from src.crimson_magick.cifar_zoo.constants import HUGGINGFACE_ZOO
-from src.crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar, get_test_loader
-from src.crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import Arch
-from src.crimson_magick.cifar_zoo.mobilenet import mobilenet_cifar, mobilenet_for_training
-from src.crimson_magick.cifar_zoo.resnet import resnet_cifar, resnet_for_training
-from src.crimson_magick.cifar_zoo.vgg import vgg_cifar, vgg_for_training
+from crimson_magick.cifar_zoo.constants import HUGGINGFACE_ZOO
+from crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar, get_test_loader
+from crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import Arch
+from crimson_magick.cifar_zoo.mobilenet import mobilenet_cifar, mobilenet_for_training
+from crimson_magick.cifar_zoo.resnet import resnet_cifar, resnet_for_training
+from crimson_magick.cifar_zoo.vgg import vgg_cifar, vgg_for_training
 
 logger = logging.getLogger()
 

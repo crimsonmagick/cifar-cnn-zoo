@@ -7,3 +7,4 @@ data
 model_safetensors
 dist
 *.egg-info/
+.python-version

@@ -9,7 +9,7 @@ import logging
 
 from constants import CHECKPOINT_DIR
 from evaluation import evaluate
-from src.crimson_magick.cifar_zoo.model_services import model_for_training
+from crimson_magick.cifar_zoo.model_services import model_for_training
 
 logger = logging.getLogger()
 

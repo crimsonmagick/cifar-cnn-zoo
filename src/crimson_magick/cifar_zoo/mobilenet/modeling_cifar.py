@@ -1,9 +1,9 @@
 from timm.models import EfficientNet
 from torch import nn
 
-from src.crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar
-from src.crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import ArchType
-from src.crimson_magick.cifar_zoo.fine_tuned.modeling_cifar import CifarCNN
+from crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar
+from crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import ArchType
+from crimson_magick.cifar_zoo.fine_tuned.modeling_cifar import CifarCNN
 
 
 class MobileNetForCIFAR(CifarCNN):

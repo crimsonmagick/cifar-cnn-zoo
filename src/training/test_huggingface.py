@@ -6,7 +6,7 @@ import torch.nn as nn
 import logging
 
 from evaluation import evaluate
-from src.crimson_magick.cifar_zoo import load_model, Arch, Cifar, get_test_loader
+from crimson_magick.cifar_zoo import load_model, Arch, Cifar, get_test_loader
 
 logger = logging.getLogger()
 

@@ -4,9 +4,9 @@ from torch import optim
 from torchvision import models
 from torchvision.models import VGG11_Weights, VGG13_Weights, VGG16_Weights, VGG19_Weights
 
-from src.crimson_magick.cifar_zoo.fine_tuned.datasets import get_loaders, Cifar
-from src.crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
-from src.crimson_magick.cifar_zoo.vgg.modeling_cifar import VGGForCIFAR
+from crimson_magick.cifar_zoo.fine_tuned.datasets import get_loaders, Cifar
+from crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
+from crimson_magick.cifar_zoo.vgg.modeling_cifar import VGGForCIFAR
 
 logger = logging.getLogger()
 
