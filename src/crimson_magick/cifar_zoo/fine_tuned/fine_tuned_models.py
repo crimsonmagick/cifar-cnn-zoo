@@ -2,7 +2,7 @@ from enum import Enum
 
 import timm
 
-from src.zoo.fine_tuned.datasets import Cifar
+from src.crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar
 
 
 class ArchType(Enum):

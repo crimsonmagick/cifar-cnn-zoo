@@ -6,7 +6,7 @@ import torch.nn as nn
 import logging
 
 from evaluation import evaluate
-from src.zoo import load_model, Arch, Cifar, get_test_loader
+from src.crimson_magick.cifar_zoo import load_model, Arch, Cifar, get_test_loader
 
 logger = logging.getLogger()
 
@@ -25,6 +25,7 @@ def main():
     dataset = Cifar[dataset_name.upper()]
     model = load_model(arch, dataset, device)
     test_loader = get_test_loader(model.dataset)
+
 
     print(f"Testing {model.model_name}")
     criterion = nn.CrossEntropyLoss()

@@ -4,9 +4,9 @@ from torch import optim
 from torchvision import models
 from torchvision.models import ResNet18_Weights, ResNet34_Weights, ResNet50_Weights
 
-from src.zoo.fine_tuned.datasets import get_loaders, Cifar
-from src.zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
-from src.zoo.resnet.modeling_cifar import ResNetForCIFAR
+from src.crimson_magick.cifar_zoo.fine_tuned.datasets import get_loaders, Cifar
+from src.crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import TorchVisionModelProvider
+from src.crimson_magick.cifar_zoo.resnet.modeling_cifar import ResNetForCIFAR
 
 logger = logging.getLogger()
 

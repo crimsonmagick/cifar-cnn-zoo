@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools >= 68.0.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crimson-cifar-zoo"
+version = "0.0.1"
+requires-python = ">= 3.11"
+dependencies = [
+    "numpy==1.26.4",
+    "torch>=2.10.0",
+    "huggingface_hub>=1.4.1",
+    "safetensors>=0.7.0",
+    "torchvision>=0.25.0",
+    "timm>=1.0.24"
+]
+
+[project.urls]
+Homepage = "https://github.com/crimsonmagick/cifar-cnn-zoo/"
+Issues = "https://github.com/crimsonmagick/cifar-cnn-zoo/issues"
+
+[tool.setuptools]
+package-dir = {"" = "src/zoo"}
+
+[tool.setuptools.packages.find]
+where = ["src/zoo"]

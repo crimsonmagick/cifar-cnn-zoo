@@ -2,9 +2,9 @@ import logging
 
 from torch import optim
 
-from src.zoo.fine_tuned.datasets import Cifar, get_loaders
-from src.zoo.fine_tuned.fine_tuned_models import TIMMModelProvider
-from src.zoo.mobilenet.modeling_cifar import MobileNetForCIFAR
+from src.crimson_magick.cifar_zoo.fine_tuned.datasets import Cifar, get_loaders
+from src.crimson_magick.cifar_zoo.fine_tuned.fine_tuned_models import TIMMModelProvider
+from src.crimson_magick.cifar_zoo.mobilenet.modeling_cifar import MobileNetForCIFAR
 
 logger = logging.getLogger()
 

@@ -6,7 +6,7 @@ import torch.nn as nn
 import logging
 
 from evaluation import evaluate
-from src.zoo.model_services import model_for_testing_safetensor
+from src.crimson_magick.cifar_zoo.model_services import model_for_testing_safetensor
 
 logger = logging.getLogger()
 
