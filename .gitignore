@@ -5,3 +5,5 @@ cifar-cnn-zoo
 **/__pycache__/**
 data
 model_safetensors
+dist
+*.egg-info/
