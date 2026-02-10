@@ -1,4 +1,3 @@
-.idea
 model_checkpoints
 model_checkpoints_old
 cifar-cnn-zoo
@@ -7,4 +6,4 @@ data
 model_safetensors
 dist
 *.egg-info/
-.python-version
+.*
